@@ -22,7 +22,7 @@ Two sequential review passes. If any review surfaces issues, discuss with the us
 
 Look at the available skills and the codebase's tech stack. Identify skills that could review the implementation — code review, testing, security, type checking, etc.
 
-**Present the shortlist to the user with reasoning.** Let the user choose which to run. For each selected skill, spawn an Agent to review the implementation.
+**Present the shortlist to the user with reasoning.** Let the user choose which to run. Then invoke each selected skill directly (via the Skill tool) to review the implementation.
 
 If reviews surface actionable issues: discuss with the user, return to Step 1 if changes are needed.
 
