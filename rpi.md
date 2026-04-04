@@ -65,7 +65,18 @@ If a question can be answered by exploring the codebase, explore the codebase in
 
 ### 4. Claude code Review Plan 文件
 
-#### 4-1 確認 Plan 符合 best practice
+#### 4-1 確認 Plan 符合目前的 code convention
+
+檢查目前的 Plan 跟 codebase 內的 code convention 是一致的。
+
+- 如果兩者一致: 直接進到 4-2
+- 如果兩者不一致:
+  - 如果你覺得 Plan 的作法比較好: 詢問使用者
+    - 如果使用者同意 Plan 的作法: 繼續往下執行
+    - 如果使用者不同意 Plan 的作法: 回到步驟 3 更新文件
+  - 如果你覺得 convention 的作法比較好: 回到步驟 3 更新文件
+
+#### 4-2 確認 Plan 符合 best practice
 
 根據使用者目前裝的 skill 以及 codebase 找出所有適合的 skills，並為他們每個啟一個 agent 來 review 這個 plan。
 
@@ -73,7 +84,7 @@ If a question can be answered by exploring the codebase, explore the codebase in
 
 如果 review 時有發現可以調整的地方時，視情況問使用者問題，然後回到步驟 3。
 
-#### 4-2 確認 Plan 沒有任何潛在問題
+#### 4-3 確認 Plan 沒有任何潛在問題
 
 Claude code 自己 review Plan 文件，問自己：這個 Plan 有沒有什麼潛在問題
 
