@@ -22,64 +22,48 @@ All artifacts live under `.rpi/{feature-name}/`:
 
 ```
 .rpi/{feature-name}/
-├── state.json        — Current phase and sub-step
 ├── requirement.md    — Requirements document (Phase 1 output)
 └── plan.md           — Implementation plan (Phase 2 output)
 ```
 
 ## State Management
 
-### State File Format
+There is no explicit state file. The current phase is inferred from which files exist:
 
-```json
-{
-  "phase": "requirement",
-  "sub_step": "interview",
-  "feature_name": "auth-login"
-}
-```
+1. **No `requirement.md`** → Phase 1 (Requirement)
+2. **`requirement.md` exists, no `plan.md`** → Phase 2 (Plan)
+3. **Both exist** → Phase 3 (Implementation)
 
 ### On Invocation
 
 1. Check if `.rpi/{feature-name}/` exists
-2. **If new**: Create the directory, initialize `state.json` with phase `requirement` and sub_step `interview`, then start Phase 1
-3. **If exists**: Read `state.json`, re-read all existing artifacts (`requirement.md`, `plan.md` if they exist) to rebuild context, then resume at the recorded phase and sub-step
+2. **If new**: Create the directory and start Phase 1
+3. **If exists**: Check which files are present, re-read them to rebuild context, and resume at the inferred phase
 
-### Updating State
+### Phase Dispatching
 
-Update `state.json` whenever you enter a new sub-step. This is your bookmark — if the conversation ends and resumes later, you'll pick up here.
+Based on the inferred phase, read the corresponding reference file and follow its instructions:
 
-### Valid Sub-Steps by Phase
-
-- **requirement**: `interview`, `write_requirement`, `self_review`, `user_review`
-- **plan**: `enter_plan_mode`, `interview`, `write_plan`, `review_convention`, `review_skills`, `review_self`, `user_review`
-- **implementation**: `implement`, `review_skills`, `review_self`, `done`
-
-## Phase Dispatching
-
-Based on the current phase in `state.json`, read the corresponding reference file and follow its instructions:
-
-- `requirement` → read `references/phase-r.md`
-- `plan` → read `references/phase-p.md`
-- `implementation` → read `references/phase-i.md`
+- Phase 1 → read `references/phase-r.md`
+- Phase 2 → read `references/phase-p.md`
+- Phase 3 → read `references/phase-i.md`
 
 ## Phase Transitions
 
 ### Requirement → Plan (R → P)
 
-Before advancing: ensure `requirement.md` is written and contains all decisions from the interview. Update `state.json` to `{ "phase": "plan", "sub_step": "enter_plan_mode" }`.
+Before advancing: ensure `requirement.md` is written and contains all decisions from the interview.
 
 ### Plan → Implementation (P → I)
 
-Before advancing: ensure `plan.md` is written and reflects all review feedback. Update `state.json` to `{ "phase": "implementation", "sub_step": "implement" }`.
+Before advancing: ensure `plan.md` is written and reflects all review feedback.
 
 ## Jump-Back Mechanism
 
 The user can request to jump back to any earlier phase at any time (e.g., "let's go back to requirements"). When this happens:
 
-1. Update `state.json` to the target phase's first sub-step
-2. Keep all existing files intact — they serve as the starting point for the re-entered phase
-3. Re-read the relevant artifacts and continue from there
+1. Keep all existing files intact — they serve as the starting point for the re-entered phase
+2. Re-read the relevant artifacts and re-enter that phase's flow
 
 ## Language
 

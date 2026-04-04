@@ -14,15 +14,11 @@ Execute the plan step by step. For each step:
 
 **Do not auto-commit.** Leave committing to the user.
 
-Update state: `{ "sub_step": "implement" }`
-
 ## Step 2 — Reviews
 
 Two sequential review passes. If any review surfaces issues, discuss with the user and return to **Step 1** to fix the code.
 
 ### 2-1: Skill-Based Review
-
-Update state: `{ "sub_step": "review_skills" }`
 
 Look at the available skills and the codebase's tech stack. Identify skills that could review the implementation — code review, testing, security, type checking, etc.
 
@@ -31,8 +27,6 @@ Look at the available skills and the codebase's tech stack. Identify skills that
 If reviews surface actionable issues: discuss with the user, return to Step 1 if changes are needed.
 
 ### 2-2: Self-Review
-
-Update state: `{ "sub_step": "review_self" }`
 
 Review the implementation yourself. Ask: does this implementation have any potential issues?
 
@@ -43,8 +37,6 @@ Review the implementation yourself. Ask: does this implementation have any poten
 If you find issues: discuss with the user, return to Step 1 if needed.
 
 ## Step 3 — Done
-
-Update state: `{ "sub_step": "done" }`
 
 The implementation is complete. Summarize what was built and any notable decisions made during implementation. Remind the user they can commit when ready.
 
