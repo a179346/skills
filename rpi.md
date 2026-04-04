@@ -40,16 +40,9 @@ skills/rpi/
 
 是否將 `.rpi/` 加入 `.gitignore` 由使用這個 skill 的使用者自行決定。
 
-### 狀態推斷
-
-當前階段由檔案存在與否推斷：
-1. 沒有 `requirement.md` → 階段 1（Requirement）
-2. 有 `requirement.md`，沒有 `plan.md` → 階段 2（Plan）
-3. 兩者都有 → 階段 3（Implementation）
-
-對話中斷後重新啟動時，檢查哪些檔案存在，重新載入它們，從推斷出的階段繼續。
-
 ### 階段之間的 Context 交接
+
+每次呼叫 `/rpi` 都從階段 1 開始，不嘗試推斷或恢復之前的進度。
 
 階段之間透過檔案交接。每個階段結束時，將產出寫入對應的檔案。下一個階段讀取檔案作為 input。Context window 中的採訪來回對話會自然被 compact 掉，但檔案內容是持久的。
 

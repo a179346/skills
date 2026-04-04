@@ -26,27 +26,9 @@ All artifacts live under `.rpi/{feature-name}/`:
 └── plan.md           — Implementation plan (Phase 2 output)
 ```
 
-## State Management
+## On Invocation
 
-There is no explicit state file. The current phase is inferred from which files exist:
-
-1. **No `requirement.md`** → Phase 1 (Requirement)
-2. **`requirement.md` exists, no `plan.md`** → Phase 2 (Plan)
-3. **Both exist** → Phase 3 (Implementation)
-
-### On Invocation
-
-1. Check if `.rpi/{feature-name}/` exists
-2. **If new**: Create the directory and start Phase 1
-3. **If exists**: Check which files are present, re-read them to rebuild context, and resume at the inferred phase
-
-### Phase Dispatching
-
-Based on the inferred phase, read the corresponding reference file and follow its instructions:
-
-- Phase 1 → read `references/phase-r.md`
-- Phase 2 → read `references/phase-p.md`
-- Phase 3 → read `references/phase-i.md`
+Create `.rpi/{feature-name}/` if it doesn't exist, then always start from Phase 1. Each invocation runs the full R → P → I workflow from the beginning — there is no cross-session resume.
 
 ## Phase Transitions
 
