@@ -30,6 +30,14 @@ All artifacts live under `.rpi/{feature-name}/`:
 
 Create `.rpi/{feature-name}/` if it doesn't exist, then always start from Phase 1. Each invocation runs the full R → P → I workflow from the beginning — there is no cross-session resume.
 
+Start by reading `references/phase-r.md` and following its instructions. When a phase completes, read the next phase's reference file:
+
+- Phase 1 → `references/phase-r.md`
+- Phase 2 → `references/phase-p.md`
+- Phase 3 → `references/phase-i.md`
+
+In the reference files, `{feature-name}` is a placeholder — substitute it with the actual feature name from the invocation.
+
 ## Phase Transitions
 
 ### Requirement → Plan (R → P)
@@ -42,10 +50,10 @@ Before advancing: ensure `plan.md` is written and reflects all review feedback.
 
 ## Jump-Back Mechanism
 
-The user can request to jump back to any earlier phase at any time (e.g., "let's go back to requirements"). When this happens:
+Within the same conversation, the user can request to jump back to any earlier phase at any time (e.g., "let's go back to requirements"). When this happens:
 
 1. Keep all existing files intact — they serve as the starting point for the re-entered phase
-2. Re-read the relevant artifacts and re-enter that phase's flow
+2. Re-read the relevant artifacts and re-enter that phase's reference file
 
 ## Language
 

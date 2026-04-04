@@ -45,7 +45,7 @@ Explore the codebase to understand existing conventions (naming, file structure,
 
 Look at the available skills in this session and the codebase's tech stack (languages, frameworks, tools). Identify skills that could provide useful review perspectives — for example, code review skills, architecture skills, or framework-specific skills.
 
-**Present the shortlist to the user with reasoning** for why each skill is relevant. Let the user choose which ones to use. For each selected skill, spawn an Agent to review the plan.
+**Present the shortlist to the user with reasoning** for why each skill is relevant. Let the user choose which ones to use. Then invoke each selected skill directly (via the Skill tool) to review the plan. This works within plan mode since review skills only need read-only access.
 
 If reviews surface actionable issues: discuss with the user, then return to Step 3 if changes are needed.
 
@@ -61,12 +61,12 @@ Review the plan yourself. Ask: does this plan have any potential issues? Conside
 
 If you find issues: discuss with the user, return to Step 3 if needed.
 
-## Step 5 — User Review and Exit Plan Mode
+## Step 5 — User Review
 
-The user reviews the plan via plan mode's built-in approval flow. Use `ExitPlanMode` to present the plan for approval.
+Present the plan to the user for review. Stay in plan mode during this step.
 
-- If the user has feedback: you'll re-enter the planning flow — return to **Step 2** (for new questions) or **Step 3** (for plan changes)
-- If the user approves: plan mode exits, proceed to transition
+- If the user has feedback: return to **Step 2** (for new questions) or **Step 3** (for plan changes) — all still within plan mode
+- If the user approves: exit plan mode using `ExitPlanMode`, then proceed to transition
 
 ### Transitioning to Phase 3
 
