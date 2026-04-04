@@ -6,9 +6,9 @@ This entire phase runs inside Claude Code plan mode. All steps — interviewing,
 
 ## Step 1 — Enter Plan Mode
 
-Read `.rpi/{feature-name}/requirement.md` to load the requirements into context.
+Enter Claude Code plan mode using `EnterPlanMode`.
 
-Enter Claude Code plan mode using `EnterPlanMode`. This restricts you to read-only actions, which is intentional — you should be exploring the codebase and thinking, not editing yet.
+Read `.rpi/{feature-name}/requirement.md` to load the requirements into context. This restricts you to read-only actions, which is intentional — you should be exploring the codebase and thinking, not editing yet.
 
 ## Step 2 — Interview the User
 

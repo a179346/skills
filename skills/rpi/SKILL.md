@@ -28,7 +28,7 @@ All artifacts live under `.rpi/{feature-name}/`:
 
 ## On Invocation
 
-Create `.rpi/{feature-name}/` if it doesn't exist, then always start from Phase 1. Each invocation runs the full R → P → I workflow from the beginning — there is no cross-session resume.
+Create `.rpi/{feature-name}/` if it doesn't exist, then always start from Phase 1. Each invocation runs the full R → P → I workflow from the beginning — there is no cross-session resume. If the directory already exists with files from a previous run, they will be overwritten as the workflow progresses.
 
 Start by reading `references/phase-r.md` and following its instructions. When a phase completes, read the next phase's reference file:
 
