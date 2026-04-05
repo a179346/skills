@@ -24,16 +24,29 @@ Write all produced skill files in English — Claude follows English instruction
 
 Run these phases in order:
 
-1. **Extract** — Identify the repeatable process from conversation history
-2. **Load** — Bring skill-writing knowledge into context
-3. **Interview** — Refine the extracted process with the user
-4. **Write** — Produce the skill files
-5. **Review** — Self-review + user review
-6. **Verify** — Confirm files are correctly written
+1. **Sanity Check** — Is this worth making into a skill?
+2. **Extract** — Identify the repeatable process from conversation history
+3. **Load** — Bring skill-writing knowledge into context
+4. **Interview** — Refine the extracted process with the user
+5. **Write** — Produce the skill files
+6. **Review** — Self-review + user review
+7. **Verify** — Confirm files are correctly written
 
 ---
 
-## Phase 1: Extract
+## Phase 1: Sanity Check
+
+Before diving in, do a quick reusability check. A good skill candidate is a workflow that:
+
+- **Will be repeated** — across projects, repos, or over time. One-off tasks (fixing a specific bug, a one-time data migration) don't need a skill.
+- **Has generalizable steps** — the core process works beyond this specific instance. If every step depends on this exact codebase/dataset/context, it's not reusable.
+- **Benefits from consistency** — following the same steps each time matters (e.g., a deploy checklist, a review process).
+
+If the workflow looks like a one-off, mention it briefly: "This looks fairly specific to this situation — are you sure you want a reusable skill for it, or was this more of a one-time thing?" If the user still wants it, proceed — they may see reuse potential you don't.
+
+---
+
+## Phase 2: Extract
 
 Review the current conversation history and identify the **primary successful workflow** — the sequence of steps that actually achieved the user's goal.
 
@@ -64,58 +77,50 @@ If the conversation history has been heavily compacted or there's no clear proce
 
 ---
 
-## Phase 2: Load Skill-Writing Knowledge
+## Phase 3: Load Skill-Writing Knowledge
 
 Good skills follow specific patterns — frontmatter format, description writing, progressive disclosure, etc. Before the interview, load this knowledge so it informs both the questions you ask and the skill you write.
 
-Check if `/skill-creator` is in your available skills list.
-
-- **If available:** Invoke `/skill-creator`. Only load the skill-writing knowledge into context — do NOT start the eval/iterate/test-case workflow. Tell skill-creator you're here to write a skill based on an already-extracted process.
-- **If not available:** Read `references/writing-guide.md` (bundled with this skill) for the essential guidelines.
+Read `references/writing-guide.md` (bundled with this skill). It covers frontmatter, descriptions, progressive disclosure, writing style, and common pitfalls — everything you need to write a well-structured skill.
 
 ---
 
-## Phase 3: Interview
+## Phase 4: Interview
 
-Confirm and refine the extracted process with the user. Use this approach:
+Confirm and refine the extracted process with the user. The goal is to fill gaps and resolve ambiguity — not to interrogate. Scale your questions to the complexity of the workflow.
 
-- Ask questions **one at a time**
-- For each question, provide your **recommended answer** so the user can agree or adjust
+### Approach
+
+- Provide your **recommended answer** with each question so the user can just confirm or adjust
 - If a question can be answered by **exploring the codebase**, do that instead of asking
-- Walk through each branch of the decision tree, resolving dependencies sequentially
+- Batch low-controversy items into a single confirmation (e.g., "I'd suggest these defaults for output path and trigger: [X, Y]. OK?")
 
-### What to Cover
+### Simple workflows (linear, 3-5 steps)
 
-Adapt depth to the complexity of the extracted process.
+Ask 1-2 focused questions. You likely already know most of what you need from the Extract phase. Key things to confirm:
 
-**Always cover** (even for simple processes):
+- **Trigger** — When should this skill activate? What would a user say?
+- **Generalization** — Anything from the session that should be parameterized instead of hardcoded?
 
-| Dimension | What to resolve |
-|---|---|
-| Generalization vs. specialization | Which parts of the session are universal, which were instance-specific? |
-| Trigger conditions | When should this skill activate? What would a user say or do? |
-| Step adjustments | Should any steps be reordered, merged, split, added, or removed? |
-| Artifacts | What does the skill produce when it's done? |
-| Output path | Where should the skill files be written? Default: `{project-root}/.claude/skills/` |
+For the rest (output path, artifacts, step ordering), propose sensible defaults and move on unless the user objects.
 
-**Also cover for complex processes** (multiple phases, branching, significant artifacts):
+### Complex workflows (multiple phases, branching, significant artifacts)
 
-| Dimension | What to resolve |
-|---|---|
-| Parameters | What inputs does the skill need? |
-| Completion criteria | When is each step done? When is the whole skill done? |
+Ask more questions, but still one at a time. Beyond trigger and generalization, also cover:
 
-Batching low-controversy items into a single confirmation is fine — e.g., "I'd suggest these defaults for output path and artifacts: [X, Y]. OK?"
+- **Parameters** — What inputs does the skill need?
+- **Step adjustments** — Should any steps be reordered, merged, split, added, or removed?
+- **Completion criteria** — When is each step done? When is the whole skill done?
 
 ### Ending the Interview
 
-Either you or the user can end it. Suggest ending when all relevant dimensions are covered. The user can also stop at any time.
+Either you or the user can end it. Suggest ending when you have enough to write a solid draft — the Review phase will catch remaining issues. The user can also stop at any time.
 
 ---
 
-## Phase 4: Write
+## Phase 5: Write
 
-Produce the skill files based on everything gathered so far.
+Produce the skill files based on everything gathered so far. Follow the guidelines in `references/writing-guide.md` — it covers frontmatter, descriptions, structure decisions, writing style, and common pitfalls.
 
 ### Output Path
 
@@ -128,21 +133,11 @@ Decide based on the process complexity:
 - **Simple process** (single linear flow): Just `{skill-name}/SKILL.md`
 - **Complex process** (multiple phases, branching logic): `{skill-name}/SKILL.md` as orchestrator + `{skill-name}/references/*.md` for each phase or module
 
-Follow the same structural conventions as the `rpi` skill — SKILL.md contains frontmatter, overall flow, and shared behavior; references/ contain detailed instructions for each phase.
-
-### Writing the Skill
-
-Apply the skill-writing knowledge loaded in Phase 2. Key principles:
-
-- **Description field** is the primary trigger mechanism. Make it specific and slightly "pushy" — include the contexts and phrasings that should activate the skill.
-- **Explain the why**, not just the what. Future Claude sessions are smart — give them reasoning so they can handle edge cases, not just rote instructions.
-- **Keep it lean.** Don't include instructions that aren't pulling their weight. If something can be left to Claude's judgment, leave it.
-- **Use imperative form** for instructions.
-- **Include examples** where the expected behavior might be ambiguous.
+SKILL.md contains frontmatter, overall flow, and shared behavior; references/ contain detailed instructions for each phase.
 
 ---
 
-## Phase 5: Review
+## Phase 6: Review
 
 ### Self-Review
 
@@ -154,18 +149,18 @@ Read through the produced skill and check:
 - **Frontmatter** — Name and description are correct. Description is specific enough to trigger reliably.
 - **Structure** — Progressive disclosure is appropriate for the complexity. References are used (or not) sensibly.
 
-Fix any issues found. If something requires user input, go back to Phase 3 for that specific question.
+Fix any issues found. If something requires user input, go back to Phase 4 for that specific question.
 
 ### User Review
 
 Present the skill to the user for confirmation.
 
-- If the user has feedback or changes: go back to Phase 3 (for scope/design questions) or Phase 4 (for writing adjustments) as appropriate.
-- If the user approves: proceed to Phase 6.
+- If the user has feedback or changes: go back to Phase 4 (for scope/design questions) or Phase 5 (for writing adjustments) as appropriate.
+- If the user approves: proceed to Phase 7.
 
 ---
 
-## Phase 6: Verify
+## Phase 7: Verify
 
 Confirm the skill files are correctly written to the specified path:
 
